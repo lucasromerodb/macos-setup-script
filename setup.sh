@@ -18,6 +18,7 @@
 #   figma                   — UI design and prototyping
 #   bruno                   — Open-source API client (no account required, git-friendly)
 #   granola                 — AI-powered meeting notes
+#   droid                   — AI software engineering agent by Factory
 #
 # FORMULAE (CLI tools)
 #   git             — Version control
@@ -39,8 +40,13 @@
 #   httpie          — Human-friendly HTTP CLI, easier than curl
 #   tldr            — Simplified man pages with practical examples
 #   tree            — Directory tree viewer
+#   codex           — OpenAI's AI coding agent CLI
 #   ollama          — Run AI models locally (LLaMA, Mistral, etc.)
+#   htop            — Interactive process viewer
 #   gnupg           — GPG for commit signing and file encryption
+#
+# STANDALONE INSTALLERS
+#   claude-code     — Anthropic's AI coding agent CLI (native installer)
 #
 # GLOBAL PACKAGES (via pnpm)
 #   typescript      — TypeScript compiler
@@ -126,6 +132,9 @@ CASKS=(
 
   # Meetings & notes
   granola
+
+  # AI coding agents
+  droid
 )
 
 for cask in "${CASKS[@]}"; do
@@ -171,8 +180,14 @@ FORMULAE=(
   tldr
   tree
 
+  # AI coding agents
+  codex
+
   # Local AI
   ollama
+
+  # System utilities
+  htop
 
   # Security
   gnupg
@@ -188,7 +203,18 @@ for formula in "${FORMULAE[@]}"; do
 done
 
 # ─────────────────────────────────────────────
-# 4. Oh My Zsh
+# 4. Claude Code (native installer)
+# ─────────────────────────────────────────────
+section "🤖 Claude Code"
+if command -v claude &>/dev/null; then
+  ok "Claude Code already installed"
+else
+  log "Installing Claude Code..."
+  curl -fsSL https://claude.ai/install.sh | bash || warn "Could not install Claude Code — skipping"
+fi
+
+# ─────────────────────────────────────────────
+# 5. Oh My Zsh
 # ─────────────────────────────────────────────
 section "🐚 Oh My Zsh"
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
@@ -221,7 +247,7 @@ if grep -q 'plugins=(git)' ~/.zshrc 2>/dev/null; then
 fi
 
 # ─────────────────────────────────────────────
-# 5. Mise — Node.js + global packages
+# 6. Mise — Node.js + global packages
 # ─────────────────────────────────────────────
 section "⬢  Mise / Node.js"
 if ! grep -q 'mise activate zsh' ~/.zshrc 2>/dev/null; then
@@ -238,7 +264,7 @@ pnpm add -g \
   vercel || warn "Some global packages failed to install"
 
 # ─────────────────────────────────────────────
-# 6. Git — minimal global config
+# 7. Git — minimal global config
 # ─────────────────────────────────────────────
 section "🔧 Git config"
 GIT_NAME="${GIT_NAME:-$(git config --global user.name 2>/dev/null || echo '')}"
@@ -263,7 +289,7 @@ git config --global init.defaultBranch     main
 ok "Git configured"
 
 # ─────────────────────────────────────────────
-# 7. .zshrc — aliases and modern tools
+# 8. .zshrc — aliases and modern tools
 # ─────────────────────────────────────────────
 section "✍️  .zshrc — aliases"
 
@@ -322,7 +348,7 @@ else
 fi
 
 # ─────────────────────────────────────────────
-# 8. macOS sensible defaults
+# 9. macOS sensible defaults
 # ─────────────────────────────────────────────
 section "⚙️  macOS defaults"
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -334,7 +360,7 @@ killall Dock Finder 2>/dev/null || true
 ok "macOS defaults applied"
 
 # ─────────────────────────────────────────────
-# 9. Done
+# 10. Done
 # ─────────────────────────────────────────────
 section "🎉 Setup complete"
 echo ""
