@@ -43,6 +43,8 @@
 #   codex           — OpenAI's AI coding agent CLI
 #   ollama          — Run AI models locally (LLaMA, Mistral, etc.)
 #   htop            — Interactive process viewer
+#   wget            — File downloader (not included in macOS by default)
+#   trash           — Move files to macOS Trash instead of permanent rm
 #   gnupg           — GPG for commit signing and file encryption
 #
 # STANDALONE INSTALLERS
@@ -188,6 +190,8 @@ FORMULAE=(
 
   # System utilities
   htop
+  wget
+  trash
 
   # Security
   gnupg
