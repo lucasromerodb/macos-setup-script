@@ -26,6 +26,16 @@ source ~/.zshrc
 
 A log file is written to `~/dev-setup.log` — share it if anything goes wrong.
 
+## Keeping Up to Date
+
+Run `update.sh` periodically (weekly recommended) to update everything the setup installed:
+
+```sh
+./update.sh
+```
+
+This updates Homebrew packages and casks, mise runtimes, global npm packages, Oh My Zsh and its plugins, AI tools, and cleans up old versions.
+
 ## What Gets Installed
 
 | Category | Tools |
@@ -49,6 +59,8 @@ A log file is written to `~/dev-setup.log` — share it if anything goes wrong.
 | **System** | htop, wget, trash |
 | **Node globals** | typescript, tsx, vercel |
 | **Cursor extensions** | ESLint, Prettier, Tailwind CSS |
+| **Dock** | Auto-hide, cleaned up with only installed apps, no recents |
+| **macOS** | Show extensions, folders first, screenshots to `~/Documents/screenshots` |
 
 ## Config Files
 
@@ -105,6 +117,10 @@ GIT_NAME="Ada Lovelace" GIT_EMAIL="ada@example.com" ./setup.sh
 ### Cursor extensions
 
 Edit the `EXTENSIONS` array in `setup.sh` to match your team's standard set.
+
+### Dock apps
+
+Edit the `DOCK_APPS` array in `setup.sh` to control which apps appear in the Dock after setup.
 
 ## Troubleshooting
 

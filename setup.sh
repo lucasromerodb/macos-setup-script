@@ -521,14 +521,49 @@ fi
 section "⚙️  macOS defaults"
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 sudo nvram StartupMute=%01 2>/dev/null || true
-defaults write com.apple.dock autohide -bool true
 defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder ShowStatusBar -bool true
-killall Dock Finder 2>/dev/null || true
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+defaults write com.apple.screencapture location "$HOME/Documents/screenshots" 2>/dev/null
+mkdir -p "$HOME/Documents/screenshots"
 ok "macOS defaults applied"
 
 # ─────────────────────────────────────────────
-# 14. Done
+# 14. Dock cleanup
+# ─────────────────────────────────────────────
+section "🧹 Dock cleanup"
+
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock tilesize -int 48
+defaults write com.apple.dock minimize-to-application -bool true
+
+defaults delete com.apple.dock persistent-apps 2>/dev/null || true
+
+DOCK_APPS=(
+  "/Applications/Google Chrome.app"
+  "/Applications/Ghostty.app"
+  "/Applications/Cursor.app"
+  "/Applications/Slack.app"
+  "/Applications/Figma.app"
+  "/Applications/Spotify.app"
+  "/System/Applications/System Settings.app"
+)
+
+for app in "${DOCK_APPS[@]}"; do
+  if [[ -d "$app" ]]; then
+    defaults write com.apple.dock persistent-apps -array-add \
+      "<dict><key>tile-data</key><dict><key>file-data</key><dict><key>_CFURLString</key><string>$app</string><key>_CFURLStringType</key><integer>0</integer></dict></dict></dict>"
+  fi
+done
+
+killall Dock 2>/dev/null || true
+killall Finder 2>/dev/null || true
+ok "Dock configured"
+
+# ─────────────────────────────────────────────
+# 15. Done
 # ─────────────────────────────────────────────
 section "🎉 Setup complete"
 echo ""
